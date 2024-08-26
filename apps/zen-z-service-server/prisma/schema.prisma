@@ -1,0 +1,71 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Task {
+  createdAt   DateTime          @default(now())
+  description String?
+  dueDate     DateTime?
+  id          String            @id @default(cuid())
+  isCompleted Boolean?
+  priority    EnumTaskPriority?
+  subtasks    Json?
+  title       String?
+  updatedAt   DateTime          @updatedAt
+}
+
+model Streak {
+  createdAt     DateTime @default(now())
+  currentStreak Int?
+  id            String   @id @default(cuid())
+  longestStreak Int?
+  milestones    Json?
+  updatedAt     DateTime @updatedAt
+}
+
+model Habit {
+  completionDates Json?
+  createdAt       DateTime                @default(now())
+  description     String?
+  goalFrequency   EnumHabitGoalFrequency?
+  id              String                  @id @default(cuid())
+  name            String?
+  progress        Json?
+  reminders       Json?
+  updatedAt       DateTime                @updatedAt
+}
+
+model JournalEntry {
+  content   String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  isPublic  Boolean?
+  tags      Json?
+  title     String?
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+enum EnumTaskPriority {
+  Option1
+}
+
+enum EnumHabitGoalFrequency {
+  Option1
+}
